@@ -1,0 +1,44 @@
+<html>
+    <script>
+
+        let timeout ;
+        function debouncePopulateDiv() {
+            // delay the call to populateDiv untillive not been called for 100ms
+            // and I've been called atleast once.
+            clearTimeout(timeout);
+            const timeout = setTimeout(function(){
+                populateiv()
+            },1000);
+        }
+        function populateiv() {
+            // debouncing , throtlling 
+            const a = document.getElementById("firstname").value;
+            const b = document.getElementById("lastname").value;
+
+            // Axios
+            fetch("https://sum-server.100xdevs.com/sum?a" + a +"&b" + b)
+                .then(function(response){
+                    response.text()
+                        .then(function(ans){
+                            document.getElementById("finalsum").innerHTML = ans;
+                        })
+                })
+        }
+
+        // second way to write by await async function 
+        async function populateDiv2(){
+            const a = document.getElementById("firstname").value;
+            const b = document.getElementById("lastname").value;
+
+            const response = await  fetch("https://sum-server.100xdevs.com/sum?a" + a +"&b" + b)
+            const ans = await response.text()
+            document.getElementById("finalsum").innerHTML = ans;
+        }
+    </script>
+    <body>
+        <input oninput="debouncePopulateDiv()" id="firstname" type="text" placeholder="First Name"></input><br></br>
+        <input id="lastname" type="text" placeholder="Last Name"></input><br></br>
+        <button onclick="populateiv()"> Calculate Sum </button><br></br>
+        <div id="finalsum"></div>
+    </body>
+</html>
